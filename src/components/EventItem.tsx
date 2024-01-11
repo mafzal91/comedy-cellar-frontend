@@ -1,25 +1,55 @@
 import { format } from "date-fns";
-import { CalendarIcon, MapPinIcon } from "@heroicons/react/20/solid";
+import {
+  CalendarIcon,
+  MapPinIcon,
+  NoSymbolIcon,
+  CheckIcon,
+} from "@heroicons/react/20/solid";
+import { TicketIcon } from "@heroicons/react/24/outline";
 import { Show } from "../types";
 
 type EventItemProps = Show;
+
+const Availablity = ({ soldout }: { soldout: boolean }) => {
+  if (soldout) {
+    return (
+      <div className="flex">
+        <NoSymbolIcon className="h-5 w-5 text-red-400" aria-hidden="true" />
+        <br />
+        <dd className="text-red-400">Sold Out</dd>
+      </div>
+    );
+  } else {
+    return (
+      <div className="flex">
+        <CheckIcon className="h-5 w-5 text-green-400" aria-hidden="true" />
+        <br />
+        <dd className="text-green-400">Available</dd>
+      </div>
+    );
+  }
+};
 
 export function EventItem(props: EventItemProps) {
   const { showName, description, soldout, roomName, timestamp } = props;
   const dateTime = new Date(timestamp * 1000);
   const dateTimeString = dateTime.toISOString();
-  const date = format(dateTime, "EEEE, MMMM do");
+  const date = format(dateTime, "MMMM do");
   const time = format(dateTime, "h:mm a");
   return (
     <>
       {/* <img src={imageUrl} alt="" className="h-14 w-14 flex-none rounded-full" /> */}
+
       <div className="flex-auto">
-        <h3
-          className="pr-10 font-semibold text-gray-900 xl:pr-0"
-          title={description}
-        >
-          {showName}
-        </h3>
+        <div className="flex">
+          <h3
+            className="pr-10 font-semibold text-gray-900 xl:pr-0"
+            title={description}
+          >
+            {showName}
+          </h3>
+          <Availablity soldout={soldout} />
+        </div>
         <dl className="mt-2 flex flex-col text-gray-500 xl:flex-row">
           <div className="flex items-start space-x-3">
             <dt className="mt-0.5">
@@ -46,6 +76,16 @@ export function EventItem(props: EventItemProps) {
             <dd>{roomName}</dd>
           </div>
         </dl>
+      </div>
+      <div className={"flex items-center"}>
+        <a
+          target={"_blank"}
+          rel="noreferrer noopener"
+          href={`https://www.comedycellar.com/reservations-newyork/?showid=${timestamp}`}
+          className="mt-0.5 rounded bg-white px-2 py-1 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+        >
+          <TicketIcon className="-ml-0.5 h-5 w-5" aria-hidden="true" />
+        </a>
       </div>
     </>
   );

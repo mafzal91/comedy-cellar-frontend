@@ -29,12 +29,12 @@ export function Home() {
         Upcoming Shows
       </h2>
       <div className="lg:grid lg:grid-cols-12 lg:gap-x-16">
-        <div className="mt-10 text-center lg:col-start-8 lg:col-end-13 lg:row-start-1 lg:mt-9 xl:col-start-9">
+        <div className="mt-10 text-center lg:col-start-1 lg:col-end-5 lg:row-start-1 lg:mt-9">
           <Calendar value={selectedDate} onChange={setSelectedDate} />
         </div>
 
         <div className="mt-4 overflow-hidden rounded-lg bg-white shadow ring-1 ring-gray-200 lg:col-span-7 xl:col-span-8 ">
-          <div className="px-4 py-5 sm:p-6">
+          <div className="px-4 py-5 sm:p-4">
             {isLoading ? (
               <div>Loading...</div>
             ) : (
@@ -42,7 +42,7 @@ export function Home() {
                 {data.map((show) => (
                   <li
                     key={show.id}
-                    className="relative flex space-x-6 xl:static"
+                    className="relative flex space-x-6 xl:static py-4 first:pt-0 last:pb-0 "
                   >
                     <EventItem {...show} />
                   </li>

@@ -1,3 +1,5 @@
+export type LineUp = {};
+
 export type Show = {
   id: number;
   time: string;
