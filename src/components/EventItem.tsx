@@ -1,14 +1,21 @@
+import { useState } from "preact/hooks";
 import { format } from "date-fns";
 import {
   CalendarIcon,
   MapPinIcon,
   NoSymbolIcon,
   CheckIcon,
+  ChevronLeftIcon,
+  ChevronUpIcon,
+  ChevronDownIcon,
 } from "@heroicons/react/20/solid";
 import { TicketIcon } from "@heroicons/react/24/outline";
-import { Show } from "../types";
+import { Show, LineUp } from "../types";
 
-type EventItemProps = Show;
+type EventItemProps = Show &
+  LineUp & {
+    isLineUpLoading: boolean;
+  };
 
 const Availablity = ({ soldout }: { soldout: boolean }) => {
   if (soldout) {
@@ -31,11 +38,15 @@ const Availablity = ({ soldout }: { soldout: boolean }) => {
 };
 
 export function EventItem(props: EventItemProps) {
-  const { showName, description, soldout, roomName, timestamp } = props;
+  const [isExpanded, setIsExpanded] = useState(false);
+  const { showName, description, soldout, roomName, timestamp, acts } = props;
   const dateTime = new Date(timestamp * 1000);
   const dateTimeString = dateTime.toISOString();
   const date = format(dateTime, "MMMM do");
   const time = format(dateTime, "h:mm a");
+  console.log(acts);
+  // const imageUrl = lineUp?.[0].img;
+
   return (
     <>
       {/* <img src={imageUrl} alt="" className="h-14 w-14 flex-none rounded-full" /> */}
@@ -78,6 +89,21 @@ export function EventItem(props: EventItemProps) {
         </dl>
       </div>
       <div className={"flex items-center"}>
+        <button className="mt-0.5 rounded bg-white px-2 py-1 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+          {isExpanded ? (
+            <ChevronUpIcon
+              onClick={() => setIsExpanded(false)}
+              className="-ml-0.5 h-5 w-5"
+              aria-hidden="true"
+            />
+          ) : (
+            <ChevronLeftIcon
+              onClick={() => setIsExpanded(true)}
+              className="-ml-0.5 h-5 w-5"
+              aria-hidden="true"
+            />
+          )}
+        </button>
         <a
           target={"_blank"}
           rel="noreferrer noopener"
@@ -87,6 +113,11 @@ export function EventItem(props: EventItemProps) {
           <TicketIcon className="-ml-0.5 h-5 w-5" aria-hidden="true" />
         </a>
       </div>
+      {isExpanded && (
+        <div className="mt-2">
+          <p className="text-sm text-gray-500">{description}</p>
+        </div>
+      )}
     </>
   );
 }

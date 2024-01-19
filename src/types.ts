@@ -1,4 +1,13 @@
-export type LineUp = {};
+export type LineUp = {
+  reservationUrl: string;
+  timestamp: number;
+  acts: {
+    description: string;
+    img: string;
+    name: string;
+    website: string;
+  }[];
+};
 
 export type Show = {
   id: number;
