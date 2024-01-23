@@ -2,11 +2,27 @@ import { useState } from "preact/hooks";
 import { useQuery } from "react-query";
 import { Calendar } from "../../components/Calendar";
 import { EventItem } from "../../components/EventItem";
+import { EventLoader } from "../../components/EventLoader";
 import { fetchShowDetails, fetchLineUp } from "../../utils/api";
 
 import { Show, LineUp } from "../../types";
 
 const today = new Date().toISOString().slice(0, 10);
+
+function Loader() {
+  return (
+    <ol className="divide-y divide-gray-100 text-sm leading-6">
+      {new Array(10).fill(0).map((_, index) => (
+        <li
+          key={index}
+          className="relative flex space-x-6 xl:static py-4 first:pt-0 last:pb-0 "
+        >
+          <EventLoader />
+        </li>
+      ))}
+    </ol>
+  );
+}
 
 export function Home() {
   // TODO: make selected date the timestamp and not the formated string YYYY-MM-DD
@@ -55,7 +71,7 @@ export function Home() {
         <div className="mt-4 overflow-hidden rounded-lg bg-white shadow ring-1 ring-gray-200 lg:col-span-7 xl:col-span-8 ">
           <div className="px-4 py-5 sm:p-4">
             {showData.isLoading ? (
-              <div>Loading...</div>
+              <Loader />
             ) : (
               <ol className="divide-y divide-gray-100 text-sm leading-6">
                 {showData.data.map((show) => {

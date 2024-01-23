@@ -88,20 +88,15 @@ export function EventItem(props: EventItemProps) {
           </div>
         </dl>
       </div>
-      <div className={"flex items-center"}>
-        <button className="mt-0.5 rounded bg-white px-2 py-1 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+      <div className={"mt-0.5 flex items-center"}>
+        <button
+          className="mr-2 rounded bg-white px-2 py-1 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+          onClick={() => setIsExpanded(!isExpanded)}
+        >
           {isExpanded ? (
-            <ChevronUpIcon
-              onClick={() => setIsExpanded(false)}
-              className="-ml-0.5 h-5 w-5"
-              aria-hidden="true"
-            />
+            <ChevronUpIcon className="-ml-0.5 h-5 w-5" aria-hidden="true" />
           ) : (
-            <ChevronLeftIcon
-              onClick={() => setIsExpanded(true)}
-              className="-ml-0.5 h-5 w-5"
-              aria-hidden="true"
-            />
+            <ChevronLeftIcon className="-ml-0.5 h-5 w-5" aria-hidden="true" />
           )}
         </button>
         <a
