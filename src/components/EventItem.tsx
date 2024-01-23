@@ -12,59 +12,49 @@ import {
 import { TicketIcon } from "@heroicons/react/24/outline";
 import { Show, LineUp } from "../types";
 
-type EventItemProps = Show &
-  LineUp & {
-    isLineUpLoading: boolean;
-  };
+type EventItemProps = {
+  show: Show;
+  lineUp: LineUp;
+  isLineUpLoading: boolean;
+};
 
-const Availablity = ({
+const Availablity2 = ({
   isEventOver,
   soldout,
 }: {
   isEventOver: boolean;
   soldout: boolean;
 }) => {
-  if (isPast) {
-    return (
-      <div className="flex">
-        <NoSymbolIcon className="h-5 w-5 text-red-400" aria-hidden="true" />
-        <br />
-        <dd className="text-red-400">Event over</dd>
-      </div>
-    );
-  }
-  if (soldout) {
-    return (
-      <div className="flex">
-        <NoSymbolIcon className="h-5 w-5 text-red-400" aria-hidden="true" />
-        <br />
-        <dd className="text-red-400">Sold Out</dd>
-      </div>
-    );
+  let Component = CheckIcon;
+  let color = "text-green-400";
+  let text = "Available";
+
+  if (isEventOver || soldout) {
+    Component = NoSymbolIcon;
+    color = "text-red-400";
+    text = isEventOver ? "Event over" : "Sold Out";
   }
   return (
-    <div className="flex">
-      <CheckIcon className="h-5 w-5 text-green-400" aria-hidden="true" />
-      <br />
-      <dd className="text-green-400">Available</dd>
+    <div className="flex flex-col items-center justify-center">
+      <Component className={`h-8 w-8 ${color}`} aria-hidden="true" />
+      <span className={color}>{text}</span>
     </div>
   );
 };
 
 export function EventItem(props: EventItemProps) {
   const [isExpanded, setIsExpanded] = useState(false);
-  const { showName, description, soldout, roomName, timestamp, acts } = props;
+  const { showName, description, soldout, roomName, timestamp } = props.show;
+  const { acts } = props.lineUp;
   const dateTime = new Date(timestamp * 1000);
   const dateTimeString = dateTime.toISOString();
   const date = format(dateTime, "MMMM do");
   const time = format(dateTime, "h:mm a");
   const isEventOver = isPast(dateTime);
-  console.log(acts);
-  // const imageUrl = lineUp?.[0].img;
 
   return (
     <>
-      {/* <img src={imageUrl} alt="" className="h-14 w-14 flex-none rounded-full" /> */}
+      <Availablity2 soldout={soldout} isEventOver={isEventOver} />
 
       <div className="flex-auto">
         <div className="flex">
@@ -74,7 +64,6 @@ export function EventItem(props: EventItemProps) {
           >
             {showName}
           </h3>
-          <Availablity soldout={soldout} isEventOver={isEventOver} />
         </div>
         <dl className="mt-2 flex flex-col text-gray-500 xl:flex-row">
           <div className="flex items-start space-x-3">

@@ -81,12 +81,15 @@ export function Home() {
                       className="relative flex space-x-6 xl:static py-4 first:pt-0 last:pb-0 "
                     >
                       <EventItem
-                        {...show}
+                        show={show}
+                        lineUp={
+                          (!lineUpData.isLoading &&
+                            findLineUp(show.timestamp)) ?? {
+                            reservationUrl: "",
+                            lineUp: [],
+                          }
+                        }
                         isLineUpLoading={lineUpData.isLoading}
-                        {...(findLineUp(show.timestamp) ?? {
-                          reservationUrl: "",
-                          lineUp: [],
-                        })}
                       />
                     </li>
                   );
