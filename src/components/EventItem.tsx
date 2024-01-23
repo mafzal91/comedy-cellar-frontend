@@ -1,5 +1,5 @@
 import { useState } from "preact/hooks";
-import { format } from "date-fns";
+import { format, isPast } from "date-fns";
 import {
   CalendarIcon,
   MapPinIcon,
@@ -17,7 +17,22 @@ type EventItemProps = Show &
     isLineUpLoading: boolean;
   };
 
-const Availablity = ({ soldout }: { soldout: boolean }) => {
+const Availablity = ({
+  isEventOver,
+  soldout,
+}: {
+  isEventOver: boolean;
+  soldout: boolean;
+}) => {
+  if (isPast) {
+    return (
+      <div className="flex">
+        <NoSymbolIcon className="h-5 w-5 text-red-400" aria-hidden="true" />
+        <br />
+        <dd className="text-red-400">Event over</dd>
+      </div>
+    );
+  }
   if (soldout) {
     return (
       <div className="flex">
@@ -26,15 +41,14 @@ const Availablity = ({ soldout }: { soldout: boolean }) => {
         <dd className="text-red-400">Sold Out</dd>
       </div>
     );
-  } else {
-    return (
-      <div className="flex">
-        <CheckIcon className="h-5 w-5 text-green-400" aria-hidden="true" />
-        <br />
-        <dd className="text-green-400">Available</dd>
-      </div>
-    );
   }
+  return (
+    <div className="flex">
+      <CheckIcon className="h-5 w-5 text-green-400" aria-hidden="true" />
+      <br />
+      <dd className="text-green-400">Available</dd>
+    </div>
+  );
 };
 
 export function EventItem(props: EventItemProps) {
@@ -44,6 +58,7 @@ export function EventItem(props: EventItemProps) {
   const dateTimeString = dateTime.toISOString();
   const date = format(dateTime, "MMMM do");
   const time = format(dateTime, "h:mm a");
+  const isEventOver = isPast(dateTime);
   console.log(acts);
   // const imageUrl = lineUp?.[0].img;
 
@@ -59,7 +74,7 @@ export function EventItem(props: EventItemProps) {
           >
             {showName}
           </h3>
-          <Availablity soldout={soldout} />
+          <Availablity soldout={soldout} isEventOver={isEventOver} />
         </div>
         <dl className="mt-2 flex flex-col text-gray-500 xl:flex-row">
           <div className="flex items-start space-x-3">
@@ -99,14 +114,16 @@ export function EventItem(props: EventItemProps) {
             <ChevronLeftIcon className="-ml-0.5 h-5 w-5" aria-hidden="true" />
           )}
         </button>
-        <a
-          target={"_blank"}
-          rel="noreferrer noopener"
-          href={`https://www.comedycellar.com/reservations-newyork/?showid=${timestamp}`}
-          className="mt-0.5 rounded bg-white px-2 py-1 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-        >
-          <TicketIcon className="-ml-0.5 h-5 w-5" aria-hidden="true" />
-        </a>
+        {!isEventOver && (
+          <a
+            target={"_blank"}
+            rel="noreferrer noopener"
+            href={`https://www.comedycellar.com/reservations-newyork/?showid=${timestamp}`}
+            className="mt-0.5 rounded bg-white px-2 py-1 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+          >
+            <TicketIcon className="-ml-0.5 h-5 w-5" aria-hidden="true" />
+          </a>
+        )}
       </div>
       {isExpanded && (
         <div className="mt-2">
