@@ -29,7 +29,7 @@ export function EventLoader() {
       <div className="mt-0.5 flex items-center">
         <button
           disabled
-          className="mr-2 rounded bg-gray-300 px-2 py-1 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+          className="mr-2 rounded bg-gray-300 px-2 py-1 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300"
         >
           <div className="-ml-0.5 h-5 w-5"></div>
           {/* <ChevronLeftIcon className="-ml-0.5 h-5 w-5" aria-hidden="true" /> */}
@@ -37,7 +37,7 @@ export function EventLoader() {
         <span
           target={"_blank"}
           rel="noreferrer noopener"
-          className="rounded bg-gray-300 px-2 py-1 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+          className="rounded bg-gray-300 px-2 py-1 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300"
         >
           <div className="-ml-0.5 h-5 w-5"></div>
         </span>

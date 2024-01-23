@@ -36,6 +36,7 @@ export function CalendarButton({
         day.isCurrentMonth ? "bg-white" : "bg-gray-50",
         (day.isSelected || day.isToday) && "font-semibold",
         day.isSelected && "text-white",
+        day.isSelected && day.isToday && "text-black",
         !day.isSelected &&
           day.isCurrentMonth &&
           !day.isToday &&
@@ -44,7 +45,7 @@ export function CalendarButton({
           !day.isCurrentMonth &&
           !day.isToday &&
           "text-gray-400",
-        day.isToday && !day.isSelected && "text-indigo-600",
+        day.isToday && !day.isSelected && "text-[#f6cb5c]",
         dayIdx === 0 && "rounded-tl-lg",
         dayIdx === 6 && "rounded-tr-lg",
         dayIdx === days.length - 7 && "rounded-bl-lg",
@@ -59,7 +60,7 @@ export function CalendarButton({
         dateTime={day.date}
         className={clsx(
           "mx-auto flex h-7 w-7 items-center justify-center rounded-full",
-          day.isSelected && day.isToday && "bg-indigo-600",
+          day.isSelected && day.isToday && "bg-[#f6cb5c]",
           day.isSelected && !day.isToday && "bg-gray-900"
         )}
       >

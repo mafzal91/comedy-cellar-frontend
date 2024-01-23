@@ -75,7 +75,6 @@ export function Home() {
             ) : (
               <ol className="divide-y divide-gray-100 text-sm leading-6">
                 {showData.data.map((show) => {
-                  console.log(findLineUp(show.timestamp));
                   return (
                     <li
                       key={show.id}
