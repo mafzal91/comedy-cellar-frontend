@@ -125,14 +125,26 @@ export function Event(props: EventItemProps) {
       {isExpanded && (
         <div className="mt-4">
           <ul role="list" className="divide-y divide-gray-100">
-            {acts.map((act, index) => (
-              <li
-                key={index}
-                className="flex gap-x-4 py-4 first:pt-0 last:pb-0 even:bg-gray-50"
-              >
-                <Act {...act} />
+            {acts.length > 0 ? (
+              acts.map((act, index) => (
+                <li
+                  key={index}
+                  className="flex gap-x-4 py-4 first:pt-0 last:pb-0 even:bg-gray-50"
+                >
+                  <Act {...act} />
+                </li>
+              ))
+            ) : (
+              <li className="flex gap-x-4 py-4 first:pt-0 last:pb-0 even:bg-gray-50">
+                <div className="flex-auto">
+                  <div className="flex">
+                    <h3 className="font-semibold text-gray-900">
+                      No acts found for this show
+                    </h3>
+                  </div>
+                </div>
               </li>
-            ))}
+            )}
           </ul>
         </div>
       )}

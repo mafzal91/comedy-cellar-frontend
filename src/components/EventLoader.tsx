@@ -14,8 +14,9 @@ export function EventLoader() {
         </div>
 
         <div class="space-y-4">
-          <div class="grid grid-cols-6 gap-4 divide-x divide-gray-100">
+          <div class="grid grid-cols-8 gap-4 divide-x divide-gray-100">
             <div class="h-4 bg-gray-300	rounded col-span-4 xl:col-span-2" />
+            <div class="h-4 bg-gray-300 rounded col-span-4 xl:col-span-2" />
             <div class="h-4 bg-gray-300 rounded col-span-4 xl:col-span-2" />
           </div>
         </div>
