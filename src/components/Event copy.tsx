@@ -9,7 +9,6 @@ import {
 } from "@heroicons/react/20/solid";
 import { TicketIcon } from "@heroicons/react/24/outline";
 import { Availablity } from "./Availablity";
-import { AvailablityMobile } from "./AvailablityMobile";
 import { Act } from "./Act";
 import { Show, LineUp } from "../types";
 
@@ -46,7 +45,7 @@ export function Event(props: EventItemProps) {
   return (
     <>
       <div className="flex space-x-3 md:space-x-6">
-        <div className="hidden sm:flex flex-col items-center justify-center">
+        <div className="flex hidden md:visible">
           <Availablity
             soldout={soldout}
             isEventOver={isEventOver}
@@ -101,7 +100,7 @@ export function Event(props: EventItemProps) {
             </div>
             <div className="sm:hidden mt-2 flex items-start space-x-2 xl:ml-2 xl:mt-0 xl:border-l xl:border-gray-400 xl:border-opacity-50 xl:pl-2">
               <dt className="mt-0.5">
-                <AvailablityMobile
+                <Availablity
                   soldout={soldout}
                   isEventOver={isEventOver}
                   isNearingCapacity={
@@ -112,7 +111,7 @@ export function Event(props: EventItemProps) {
             </div>
           </dl>
         </div>
-        <div className="mt-0.5 flex items-center">
+        <div className="mt-0.5 flex  items-center">
           {!isEventOver && (
             <a
               target={"_blank"}
