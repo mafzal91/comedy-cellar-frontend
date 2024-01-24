@@ -73,8 +73,8 @@ export function Home() {
               <Loader />
             ) : (
               <ol className="divide-y divide-gray-100 text-sm leading-6">
-                {showData.data.map((show) => {
-                  return (
+                {showData.data.length ? (
+                  showData.data.map((show) => (
                     <li
                       key={show.id}
                       className="relative xl:static py-4 first:pt-0 last:pb-0"
@@ -92,8 +92,16 @@ export function Home() {
                         isLineUpLoading={lineUpData.isLoading}
                       />
                     </li>
-                  );
-                })}
+                  ))
+                ) : (
+                  <li className="relative flex space-x-6 xl:static py-4 first:pt-0 last:pb-0 ">
+                    <div className="flex space-x-3 md:space-x-6">
+                      <h3 className="font-semibold text-gray-900">
+                        No shows found for this date
+                      </h3>
+                    </div>
+                  </li>
+                )}
               </ol>
             )}
           </div>
