@@ -1,13 +1,12 @@
 import { useState } from "preact/hooks";
 import { useQuery } from "react-query";
 import { Calendar } from "../../components/Calendar";
-import { EventItem } from "../../components/EventItem";
+import { Event } from "../../components/Event";
 import { EventLoader } from "../../components/EventLoader";
+import { TODAY } from "../../utils/date";
 import { fetchShowDetails, fetchLineUp } from "../../utils/api";
 
 import { Show, LineUp } from "../../types";
-
-const today = new Date().toISOString().slice(0, 10);
 
 function Loader() {
   return (
@@ -26,7 +25,7 @@ function Loader() {
 
 export function Home() {
   // TODO: make selected date the timestamp and not the formated string YYYY-MM-DD
-  const [selectedDate, setSelectedDate] = useState(today);
+  const [selectedDate, setSelectedDate] = useState(TODAY);
 
   const showData = useQuery<Show[]>(
     ["shows", selectedDate],
@@ -78,15 +77,16 @@ export function Home() {
                   return (
                     <li
                       key={show.id}
-                      className="relative flex space-x-6 xl:static py-4 first:pt-0 last:pb-0 "
+                      className="relative xl:static py-4 first:pt-0 last:pb-0"
                     >
-                      <EventItem
+                      <Event
                         show={show}
                         lineUp={
                           (!lineUpData.isLoading &&
                             findLineUp(show.timestamp)) ?? {
                             reservationUrl: "",
-                            lineUp: [],
+                            timestamp: 0,
+                            acts: [],
                           }
                         }
                         isLineUpLoading={lineUpData.isLoading}

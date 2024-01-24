@@ -16,6 +16,7 @@ export type Show = {
   description: string;
   forwardUrl: string | null;
   soldout: boolean;
+  occupancyRate: number;
   max: number;
   special: boolean;
   roomId: number;
@@ -29,4 +30,5 @@ export type Show = {
   available: number;
   timestamp: number;
   roomName: string;
+  reservationUrl: string;
 };
