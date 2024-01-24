@@ -5,6 +5,7 @@ import {
   MapPinIcon,
   ChevronDownIcon,
   ChevronUpIcon,
+  UsersIcon,
 } from "@heroicons/react/20/solid";
 import { TicketIcon } from "@heroicons/react/24/outline";
 import { Availablity } from "./Availablity";
@@ -30,6 +31,8 @@ export function Event(props: EventItemProps) {
     timestamp,
     occupancyRate,
     reservationUrl,
+    totalGuests,
+    max,
   } = props.show;
   const { acts } = props.lineUp;
   const dateTime = new Date(timestamp * 1000);
@@ -37,6 +40,7 @@ export function Event(props: EventItemProps) {
   const date = format(dateTime, "MMMM do");
   const time = format(dateTime, "h:mm a");
   const isEventOver = isPast(dateTime);
+  const reserverdSeats = totalGuests > max ? max : totalGuests;
 
   return (
     <>
@@ -56,7 +60,7 @@ export function Event(props: EventItemProps) {
             </h3>
           </div>
           <dl className="mt-2 flex flex-col text-gray-500 xl:flex-row">
-            <div className="flex items-start space-x-3">
+            <div className="flex items-start space-x-2">
               <dt className="mt-0.5">
                 <span className="sr-only">Date</span>
                 <CalendarIcon
@@ -70,7 +74,7 @@ export function Event(props: EventItemProps) {
                 </time>
               </dd>
             </div>
-            <div className="mt-2 flex items-start space-x-3 xl:ml-3.5 xl:mt-0 xl:border-l xl:border-gray-400 xl:border-opacity-50 xl:pl-3.5">
+            <div className="mt-2 flex items-start space-x-2 xl:ml-2 xl:mt-0 xl:border-l xl:border-gray-400 xl:border-opacity-50 xl:pl-2">
               <dt className="mt-0.5">
                 <span className="sr-only">Location</span>
                 <MapPinIcon
@@ -79,6 +83,18 @@ export function Event(props: EventItemProps) {
                 />
               </dt>
               <dd>{roomName}</dd>
+            </div>
+            <div className="mt-2 flex items-start space-x-2 xl:ml-2 xl:mt-0 xl:border-l xl:border-gray-400 xl:border-opacity-50 xl:pl-2">
+              <dt className="mt-0.5">
+                <span className="sr-only">Occupancy Rate</span>
+                <UsersIcon
+                  className="h-5 w-5 text-gray-400"
+                  aria-hidden="true"
+                />
+              </dt>
+              <dd>
+                {reserverdSeats}/{max}
+              </dd>
             </div>
           </dl>
         </div>
