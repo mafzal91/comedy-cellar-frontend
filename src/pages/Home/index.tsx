@@ -77,7 +77,7 @@ export function Home() {
                   return (
                     <li
                       key={show.id}
-                      className="relative xl:static p-4 first:pt-0 last:pb-0"
+                      className="relative xl:static py-4 first:pt-0 last:pb-0"
                     >
                       <Event
                         show={show}
