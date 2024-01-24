@@ -2,10 +2,10 @@ export function Header() {
   return (
     <header className="bg-[#f6cb5c]">
       <nav
-        className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8"
+        className="mx-auto flex max-w-7xl items-center justify-between p-4"
         aria-label="Global"
       >
-        <div className="flex lg:flex-1 items-center justify-center">
+        <div className="flex grow items-center justify-center">
           <a href="/" className="-m-1.5 p-1.5">
             <span className="sr-only">Comedy Cellar NYC Schedule</span>
             <img
