@@ -1,18 +1,21 @@
-import { useLocation } from 'preact-iso';
-
 export function Header() {
-	const { url } = useLocation();
-
-	return (
-		<header>
-			<nav>
-				<a href="/" class={url == '/' && 'active'}>
-					Home
-				</a>
-				<a href="/404" class={url == '/404' && 'active'}>
-					404
-				</a>
-			</nav>
-		</header>
-	);
+  return (
+    <header className="bg-[#f6cb5c]">
+      <nav
+        className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8"
+        aria-label="Global"
+      >
+        <div className="flex lg:flex-1 items-center justify-center">
+          <a href="/" className="-m-1.5 p-1.5">
+            <span className="sr-only">Comedy Cellar NYC Schedule</span>
+            <img
+              className="h-10 w-auto"
+              src="https://www.comedycellar.com/wp-content/uploads/2023/03/TheComedyCellar_Famous_1981_logo_light.svg"
+              alt=""
+            />
+          </a>
+        </div>
+      </nav>
+    </header>
+  );
 }
