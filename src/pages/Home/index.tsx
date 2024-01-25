@@ -44,7 +44,6 @@ export function Home() {
     ["lineUps", selectedDate],
     async () => {
       const lineUpsData = await fetchLineUp({ date: selectedDate });
-
       return lineUpsData.lineUps;
     },
     {
@@ -56,7 +55,6 @@ export function Home() {
   const findLineUp = (timestamp: number) => {
     return lineUpData.data.find((lineUp) => lineUp.timestamp === timestamp);
   };
-
   return (
     <div className="px-4 py-5 sm:p-6">
       <h2 className="text-base font-semibold leading-6 text-gray-900">
@@ -77,6 +75,7 @@ export function Home() {
                   showData.data.map((show) => (
                     <li
                       key={show.id}
+                      data-timestamp={show.timestamp}
                       className="relative xl:static py-4 first:pt-0 last:pb-0"
                     >
                       <Event

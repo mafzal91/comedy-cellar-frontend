@@ -9,7 +9,6 @@ import {
 } from "@heroicons/react/20/solid";
 import { TicketIcon } from "@heroicons/react/24/outline";
 import { Availablity } from "./Availablity";
-import { AvailablityMobile } from "./AvailablityMobile";
 import { Act } from "./Act";
 import { Show, LineUp } from "../types";
 
@@ -99,26 +98,25 @@ export function Event(props: EventItemProps) {
                 {reserverdSeats}/{max}
               </dd>
             </div>
-            <div className="sm:hidden mt-2 flex items-start space-x-2 xl:ml-2 xl:mt-0 xl:border-l xl:border-gray-400 xl:border-opacity-50 xl:pl-2">
-              <dt className="mt-0.5">
-                <AvailablityMobile
-                  soldout={soldout}
-                  isEventOver={isEventOver}
-                  isNearingCapacity={
-                    occupancyRate > WARNING_OCCUPANCY_RATE && occupancyRate < 1
-                  }
-                />
-              </dt>
+            <div className="sm:hidden mt-2 flex items-start xl:ml-2 xl:mt-0 xl:border-l xl:border-gray-400 xl:border-opacity-50 xl:pl-2">
+              <span className="sr-only">Availability</span>
+              <Availablity
+                soldout={soldout}
+                isEventOver={isEventOver}
+                isNearingCapacity={
+                  occupancyRate > WARNING_OCCUPANCY_RATE && occupancyRate < 1
+                }
+              />
             </div>
           </dl>
         </div>
         <div className="mt-0.5 flex items-center">
-          {!isEventOver && (
+          {!isEventOver && !soldout && (
             <a
               target={"_blank"}
               rel="noreferrer noopener"
               href={reservationUrl}
-              className="mt-0.5 rounded bg-white px-2 py-1 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+              className="rounded bg-white px-2 py-1 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
             >
               <TicketIcon className="-ml-0.5 h-5 w-5" aria-hidden="true" />
             </a>

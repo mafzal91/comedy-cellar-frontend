@@ -1,6 +1,6 @@
 export function Header() {
   return (
-    <header className="bg-[#f6cb5c]">
+    <header className="bg-primary">
       <nav
         className="mx-auto flex max-w-7xl items-center justify-between p-4"
         aria-label="Global"

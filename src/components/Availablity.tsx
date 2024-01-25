@@ -33,9 +33,9 @@ export const Availablity = ({
   }
 
   return (
-    <div className="flex flex-col items-center justify-center">
+    <div className="flex sm:flex-col space-x-2 sm:space-x-0 items-center justify-end sm:justify-center">
       <Component
-        className={`h-8 w-8 ${color}`}
+        className={`h-5 w-5 sm:h-8 sm:w-8 ${color}`}
         aria-hidden="true"
         title={hoverText}
       />

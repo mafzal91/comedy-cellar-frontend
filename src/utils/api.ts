@@ -9,9 +9,16 @@ export const fetchShowDetails = async ({ date }: { date: string }) => {
 };
 
 export const fetchLineUp = async ({ date }: { date: string }) => {
-  const res = await fetch(`${VITE_API_URL}/api/line-up?date=${date}`);
+  try {
+    const res = await fetch(`${VITE_API_URL}/api/line-up?date=${date}`);
 
-  const response = await res.json();
+    const response = await res.json();
 
-  return response;
+    return response;
+  } catch (error) {
+    return {
+      date: "",
+      lineUps: [],
+    };
+  }
 };
