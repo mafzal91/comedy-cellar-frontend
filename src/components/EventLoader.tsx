@@ -1,23 +1,24 @@
 export function EventLoader() {
   return (
     <div class="animate-pulse grow flex space-x-4">
-      <div class="flex-0 space-y-4">
+      <div class="hidden sm:flex flex-0 space-y-4 items-center">
         <div class="grid grid-cols-1">
           <div class="rounded-full bg-gray-300 h-8 w-8"></div>
-          <div class="mt-0.5 h-4 bg-gray-300	rounded" />
+          <div class="mt-0.5 h-4 bg-gray-300 rounded" />
         </div>
       </div>
 
       <div class="flex-1 space-y-4">
         <div class="grid grid-cols-6 gap-4">
-          <div class="h-4 bg-gray-300	rounded col-span-4" />
+          <div class="h-4 bg-gray-300	rounded col-span-5 sm:col-span-4" />
         </div>
 
         <div class="space-y-4">
-          <div class="grid grid-cols-8 gap-4 divide-x divide-gray-100">
+          <div class="grid grid-cols-7 gap-4 divide-x divide-gray-100">
             <div class="h-4 bg-gray-300	rounded col-span-4 xl:col-span-2" />
             <div class="h-4 bg-gray-300 rounded col-span-4 xl:col-span-2" />
             <div class="h-4 bg-gray-300 rounded col-span-4 xl:col-span-2" />
+            <div class="sm:hidden h-4 bg-gray-300 rounded col-span-4 xl:col-span-2" />
           </div>
         </div>
       </div>
