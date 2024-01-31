@@ -23,7 +23,7 @@ function Loader() {
   );
 }
 
-export function Home() {
+export default function Home() {
   // TODO: make selected date the timestamp and not the formated string YYYY-MM-DD
   const [selectedDate, setSelectedDate] = useState(TODAY);
 
