@@ -15,8 +15,9 @@ Sentry.init({
 
 const queryClient = new QueryClient();
 
-const Home = lazy(() => import("./pages/Home/index.jsx"));
-const Reservation = lazy(() => import("./pages/Reservation/index.jsx"));
+const Home = lazy(() => import("./pages/Home"));
+const Reservations = lazy(() => import("./pages/Reservations"));
+const NotFound = lazy(() => import("./pages/NotFound"));
 
 export function App() {
   return (
@@ -25,10 +26,13 @@ export function App() {
         <ErrorBoundary>
           <Header />
           <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <Router>
-              <Home path="/" />
-              <Reservation path="/reservations" />
-            </Router>
+            <div className="px-4 py-5 sm:p-6">
+              <Router>
+                <Home path="/" />
+                <Reservations path="/reservations/:timestamp" />
+                <NotFound default />
+              </Router>
+            </div>
           </main>
         </ErrorBoundary>
       </LocationProvider>
