@@ -1,10 +1,10 @@
 import { render } from "preact";
-import * as Sentry from "@sentry/browser";
+import { LocationProvider, ErrorBoundary, lazy, Router } from "preact-iso";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { LocationProvider } from "preact-iso";
+import * as Sentry from "@sentry/browser";
 
 import { Header } from "./components/Header";
-import { Home } from "./pages/Home/index.jsx";
+
 import "./style.css";
 
 Sentry.init({
@@ -15,14 +15,26 @@ Sentry.init({
 
 const queryClient = new QueryClient();
 
+const Home = lazy(() => import("./pages/Home"));
+const Reservations = lazy(() => import("./pages/Reservations"));
+const NotFound = lazy(() => import("./pages/NotFound"));
+
 export function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <LocationProvider>
-        <Header />
-        <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <Home />
-        </main>
+        <ErrorBoundary>
+          <Header />
+          <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="px-4 py-5 sm:p-6">
+              <Router>
+                <Home path="/" />
+                <Reservations path="/reservations/:timestamp" />
+                <NotFound default />
+              </Router>
+            </div>
+          </main>
+        </ErrorBoundary>
       </LocationProvider>
     </QueryClientProvider>
   );
