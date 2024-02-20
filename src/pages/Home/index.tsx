@@ -21,6 +21,7 @@ export default function Home() {
     {
       enabled: !!selectedDate,
       refetchOnWindowFocus: false,
+      retry: false,
     }
   );
 
@@ -33,6 +34,7 @@ export default function Home() {
     {
       enabled: !!selectedDate,
       refetchOnWindowFocus: false,
+      retry: false,
     }
   );
 

@@ -3,8 +3,8 @@ import { format, isPast } from "date-fns";
 export const deriveShowDetails = (show) => {
   if (!show || !show.timestamp) {
     // Handle the case where `show` might be undefined or missing required fields
-    console.error("Invalid 'show' object passed to formatShowDetails.");
-    return {}; // Return an empty object or some default state
+    console.error("Invalid 'show' object passed to deriveShowDetails.");
+    return {};
   }
 
   const { timestamp, totalGuests, max } = show;

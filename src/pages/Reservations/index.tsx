@@ -1,13 +1,22 @@
-import { useQuery } from "react-query";
+import { useState } from "preact/hooks";
+import { useQuery, useMutation } from "react-query";
 import { isPast } from "date-fns";
 import { useLocation } from "preact-iso";
-import { fetchShowByTimestamp } from "../../utils/api";
+import { fetchShowByTimestamp, createReservation } from "../../utils/api";
 
 import { Link } from "../../components/Link";
 import { Button } from "../../components/Button";
 import { Disclaimer } from "../../components/Disclaimer";
+import { Spinner } from "../../components/Spinner";
+import { Input } from "../../components/Input";
+
 import { Section, Field, FieldWrapper } from "./Helpers";
 import { ShowDetails } from "./ShowDetails";
+import { PageLoader } from "./PageLoader";
+import { PageError } from "./PageError";
+import { FormError } from "./FormError";
+import { NetworkError } from "./NetworkError";
+import { FormSuccess } from "./FormSuccess";
 import { LineUp, Show } from "../../types";
 
 const howHeardOptions = [
@@ -42,6 +51,7 @@ const howHeardOptions = [
 const timestampRegex = /\b\d{10}\b/;
 
 export default function Reservation(props: { timestamp: string }) {
+  const [errors, setErrors] = useState([]);
   const location = useLocation();
   const timestamp = props.timestamp;
 
@@ -53,7 +63,7 @@ export default function Reservation(props: { timestamp: string }) {
     location.route("/404");
   }
 
-  const showData = useQuery<{ show: Show; lineUp?: LineUp }>(
+  const showData = useQuery<{ show?: Show; lineUp?: LineUp; error?: string }>(
     ["timestamp", timestamp],
     async () => {
       const showData = await fetchShowByTimestamp({ timestamp });
@@ -62,63 +72,99 @@ export default function Reservation(props: { timestamp: string }) {
     }
   );
 
+  const reservationMutation = useMutation(createReservation);
+
   const handleSubmit = (event: Event) => {
     event.preventDefault();
+    setErrors([]);
 
     const formData = new FormData(event.target as HTMLFormElement);
-    const data = Object.fromEntries(formData.entries());
-    console.log(data);
+
+    const formValues = {
+      firstName: formData.get("firstName") as string,
+      lastName: formData.get("lastName") as string,
+      email: formData.get("email") as string,
+      emailConfirm: formData.get("emailConfirm") as string,
+      phone: formData.get("phone") as string,
+      size: parseInt(formData.get("size") as string, 10), // Cast to number
+      smsOk: formData.get("smsOk") === "on", // Cast to boolean
+      howHeard: formData.get("howHeard") as string,
+    };
+
+    if (formValues.email !== formValues.emailConfirm) {
+      setErrors((prevError) => [
+        ...prevError,
+        { field: "email", message: "Emails do not match" },
+      ]);
+      return;
+    }
+
+    reservationMutation.mutate({
+      guest: {
+        ...formValues,
+      },
+      showId: showData.data.show.id,
+      timestamp,
+    });
   };
 
   if (showData.isLoading) {
-    return <div>Loading...</div>;
+    return <PageLoader />;
   }
 
   if (showData.isError) {
-    return <div>Error: {showData.error}</div>;
+    return <PageError />;
   }
 
-  if (!showData.data) {
-    return <div>No data</div>;
+  if (!showData.data || showData.data.error === "Show not found") {
+    location.route("/404");
   }
-
+  console.log(reservationMutation.error);
   return (
     <div className="overflow-hidden rounded-lg bg-white shadow">
       <div className="px-4 py-5 sm:p-6">
         <form onSubmit={handleSubmit}>
           <div className="grid grid-cols-1 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-6 space-x-5">
             <div className="col-span-2 sm:col-span-2 md:col-span-3 lg:col-span-4">
-              <h3></h3>
               <Section title="Reservation Information" description="">
+                <input
+                  disabled
+                  type="hidden"
+                  name="showId"
+                  value={showData.data.show.id}
+                />
+
+                <input type="hidden" name="timestamp" value={timestamp} />
+
                 <FieldWrapper>
                   <Field label="firstName" labelText={"First Name"}>
-                    <input
+                    <Input
                       type="text"
                       name="firstName"
                       id="firstName"
+                      required
                       autoComplete="given-name"
-                      className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     />
                   </Field>
 
                   <Field label="lastName" labelText={"Last Name"}>
-                    <input
+                    <Input
                       type="text"
                       name="lastName"
                       id="lastName"
+                      required
                       autoComplete="family-name"
-                      className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     />
                   </Field>
 
                   <Field label="size" labelText="Party Size (max 4)">
-                    <input
+                    <Input
+                      required
                       type="number"
                       name="size"
                       id="size"
                       max={4}
                       min={1}
-                      className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     />
                   </Field>
                 </FieldWrapper>
@@ -130,12 +176,12 @@ export default function Reservation(props: { timestamp: string }) {
               >
                 <FieldWrapper>
                   <Field label="email" labelText={"Email Address"}>
-                    <input
+                    <Input
                       id="email"
                       name="email"
                       type="email"
+                      required
                       autoComplete="email"
-                      className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     />
                   </Field>
 
@@ -143,21 +189,23 @@ export default function Reservation(props: { timestamp: string }) {
                     label="emailConfirm"
                     labelText={"Confirm Email Address"}
                   >
-                    <input
+                    <Input
                       id="emailConfirm"
                       name="emailConfirm"
                       type="email"
+                      required
                       autoComplete="email"
-                      className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     />
                   </Field>
 
                   <Field label="phone" labelText="Phone Number">
-                    <input
+                    <Input
                       type="tel"
                       name="phone"
                       id="phone"
-                      className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      pattern="[0-9][0-9]{9}"
+                      placeholder={"9876543210"}
+                      required
                     />
                   </Field>
                 </FieldWrapper>
@@ -173,6 +221,7 @@ export default function Reservation(props: { timestamp: string }) {
                     <select
                       id="howHeard"
                       name="howHeard"
+                      required
                       className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
                     >
                       {howHeardOptions.map((option) => (
@@ -189,7 +238,7 @@ export default function Reservation(props: { timestamp: string }) {
                           aria-describedby="smsOk-description"
                           name="smsOk"
                           type="checkbox"
-                          className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                          className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
                         />
                       </div>
                       <div className="ml-3 text-sm leading-6">
@@ -208,6 +257,23 @@ export default function Reservation(props: { timestamp: string }) {
                     </div>
                   </div>
                 </FieldWrapper>
+                {errors.length !== 0 && (
+                  <div className="py-6">
+                    <FormError errors={errors} />
+                  </div>
+                )}
+                {reservationMutation.isSuccess && (
+                  <div className="py-6">
+                    <FormSuccess
+                      message={reservationMutation.data.content.message}
+                    />
+                  </div>
+                )}
+                {reservationMutation.isError && (
+                  <NetworkError
+                    message={reservationMutation.error.toString()}
+                  />
+                )}
               </Section>
             </div>
             <div className="col-span-1 sm:col-span-2 md:col-span-3 lg:col-span-2 space-y-5">
@@ -219,18 +285,33 @@ export default function Reservation(props: { timestamp: string }) {
               <Disclaimer />
             </div>
           </div>
-          <div className="mt-6 flex items-center justify-between gap-x-6">
-            <Button type="submit" className="bg-primary" onClick={() => null}>
-              Submit
-            </Button>
-            <Link
-              target="_blank"
-              rel="noopener noreferrer"
-              href={showData.data.show.reservationUrl}
-            >
-              Reserve on comedycellar.com
-            </Link>
-          </div>
+          {reservationMutation.isSuccess ? (
+            <Link href={"/"}>Return home</Link>
+          ) : (
+            <div className="mt-6 flex items-center justify-between gap-x-6">
+              <Button
+                type="submit"
+                className="bg-primary"
+                disabled={
+                  showData.data.show.soldout || reservationMutation.isLoading
+                }
+              >
+                {reservationMutation.isLoading ? (
+                  <Spinner size={5} />
+                ) : (
+                  "Submit"
+                )}
+              </Button>
+              <Link
+                target="_blank"
+                rel="noopener noreferrer"
+                href={showData.data.show.reservationUrl}
+                title={"We won't be offended"}
+              >
+                Reserve on comedycellar.com
+              </Link>
+            </div>
+          )}
         </form>
       </div>
     </div>

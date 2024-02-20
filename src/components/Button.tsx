@@ -1,7 +1,6 @@
 import { FunctionalComponent, JSX } from "preact";
 import clsx from "clsx";
 
-// Define only the custom props in your interface
 interface CustomButtonProps {
   size?: "xs" | "sm" | "md" | "lg" | "xl";
 }
@@ -13,6 +12,7 @@ export const Button: FunctionalComponent<ButtonProps> = ({
   size = "md",
   className,
   children,
+  disabled,
   ...props
 }) => {
   const baseClasses =
@@ -26,19 +26,15 @@ export const Button: FunctionalComponent<ButtonProps> = ({
     xl: "px-3.5 py-2.5 text-sm",
   };
 
-  // Combine classes using clsx
   const buttonClasses = clsx(
     baseClasses,
     sizeClasses[size],
-    className // Allow custom class names
+    disabled && "opacity-50 cursor-not-allowed",
+    className
   );
 
   return (
-    <button
-      type="button"
-      className={buttonClasses}
-      {...props} // Spread all other props to the button element
-    >
+    <button type="button" className={buttonClasses} {...props}>
       {children}
     </button>
   );

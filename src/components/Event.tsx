@@ -112,25 +112,24 @@ export function Event(props: EventItemProps) {
             </div>
           </dl>
 
-          {!isEventOver && !soldout && (
+          {/* {!isEventOver && !soldout && (
             <div className="mt-2">
               <Link size={"sm"} href={`/reservations/${timestamp}`}>
                 Reserve Tickets
               </Link>
             </div>
-          )}
+          )} */}
         </div>
         <div className="mt-0.5 flex items-center">
-          {/* {!isEventOver && !soldout && (
+          {!isEventOver && !soldout && (
             <Link
-              size={"sm"}
               target={"_blank"}
               rel="noreferrer noopener"
               href={reservationUrl}
             >
               <TicketIcon className="-ml-0.5 h-5 w-5" aria-hidden="true" />
             </Link>
-          )} */}
+          )}
           <button
             className="px-2 py-1 text-xs font-semibold text-gray-900 ring-gray-300 border-0"
             disabled={isLineUpLoading}

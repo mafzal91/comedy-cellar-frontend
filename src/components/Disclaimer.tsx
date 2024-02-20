@@ -1,5 +1,5 @@
 import {
-  WalletIcon,
+  InformationCircleIcon,
   FaceSmileIcon,
   ArrowPathRoundedSquareIcon,
   ClockIcon,
@@ -38,6 +38,14 @@ const disclaimers = [
     imageUrl:
       "https://www.comedycellar.com/wp-content/uploads/2023/05/comedycellar_Showtime_icon_dark_60.svg",
     icon: ClockIcon,
+  },
+  {
+    title: "Affiliation Disclaimer",
+    description:
+      "This site is not affiliated with the Comedy Cellar. Please visit comedycellar.com for the official website terms and conditions.",
+    imageUrl:
+      "https://www.comedycellar.com/wp-content/uploads/2023/05/comedycellar_Showtime_icon_dark_60.svg",
+    icon: InformationCircleIcon,
   },
 ];
 
