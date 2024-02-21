@@ -1,4 +1,4 @@
-import { useState } from "preact/hooks";
+import { useEffect, useState } from "preact/hooks";
 import { useQuery, useMutation } from "react-query";
 import { isPast } from "date-fns";
 import { useLocation } from "preact-iso";
@@ -119,7 +119,17 @@ export default function Reservation(props: { timestamp: string }) {
   if (!showData.data || showData.data.error === "Show not found") {
     location.route("/404");
   }
-  console.log(reservationMutation.error);
+  console.log("reservationMutation.error", reservationMutation.error);
+
+  useEffect(() => {
+    if (reservationMutation.error?.error?.fieldErrors) {
+      setErrors((prevErrors) => [
+        ...prevErrors,
+        ...reservationMutation.error.error.fieldErrors,
+      ]);
+    }
+  }, [reservationMutation.error]);
+
   return (
     <div className="overflow-hidden rounded-lg bg-white shadow">
       <div className="px-4 py-5 sm:p-6">
@@ -257,23 +267,11 @@ export default function Reservation(props: { timestamp: string }) {
                     </div>
                   </div>
                 </FieldWrapper>
-                {errors.length !== 0 && (
-                  <div className="py-6">
-                    <FormError errors={errors} />
-                  </div>
-                )}
-                {reservationMutation.isSuccess && (
-                  <div className="py-6">
-                    <FormSuccess
-                      message={reservationMutation.data.content.message}
-                    />
-                  </div>
-                )}
-                {reservationMutation.isError && (
-                  <NetworkError
-                    message={reservationMutation.error.toString()}
-                  />
-                )}
+
+                <FormStatus
+                  formErrors={errors}
+                  mutation={reservationMutation}
+                />
               </Section>
             </div>
             <div className="col-span-1 sm:col-span-2 md:col-span-3 lg:col-span-2 space-y-5">
@@ -317,3 +315,26 @@ export default function Reservation(props: { timestamp: string }) {
     </div>
   );
 }
+
+const FormStatus = ({ formErrors, mutation }) => {
+  if (formErrors.length !== 0) {
+    return (
+      <div className="py-6">
+        <FormError errors={formErrors} />
+      </div>
+    );
+  }
+
+  if (mutation.isSuccess) {
+    return (
+      <div className="py-6">
+        <FormSuccess message={mutation.data.content.message} />
+      </div>
+    );
+  }
+
+  if (mutation.isError) {
+    return <NetworkError message={mutation.error.toString()} />;
+  }
+  return null;
+};
