@@ -112,14 +112,13 @@ export default function Reservation(props: { timestamp: string }) {
     return <PageLoader />;
   }
 
+  if (!showData.data || showData.error?.error === "Show not found") {
+    location.route("/404");
+  }
+
   if (showData.isError) {
     return <PageError />;
   }
-
-  if (!showData.data || showData.data.error === "Show not found") {
-    location.route("/404");
-  }
-  console.log("reservationMutation.error", reservationMutation.error);
 
   useEffect(() => {
     if (reservationMutation.error?.error?.fieldErrors) {
