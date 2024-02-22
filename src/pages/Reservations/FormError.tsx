@@ -24,7 +24,9 @@ export function FormError({
           <div className="mt-2 text-sm text-red-700">
             <ul role="list" className="list-disc space-y-1 pl-5">
               {errors.map((error) => (
-                <li key={error.field}>{error.message}</li>
+                <li key={error.field}>
+                  {error.field}: {error.message}
+                </li>
               ))}
             </ul>
           </div>

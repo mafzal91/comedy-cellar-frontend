@@ -6,11 +6,10 @@ import {
   ChevronDownIcon,
   ChevronUpIcon,
   UsersIcon,
+  ArrowTopRightOnSquareIcon,
 } from "@heroicons/react/20/solid";
-import { TicketIcon } from "@heroicons/react/24/outline";
 import { Availablity } from "./Availablity";
 import { Link } from "./Link";
-import { Button } from "./Button";
 import { Act } from "./Act";
 import { Show, LineUp } from "../types";
 import { WARNING_OCCUPANCY_RATE } from "../utils/constants";
@@ -25,7 +24,6 @@ export function Event(props: EventItemProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const { isLineUpLoading } = props;
   const {
-    id,
     showName,
     description,
     soldout,
@@ -112,13 +110,11 @@ export function Event(props: EventItemProps) {
             </div>
           </dl>
 
-          {/* {!isEventOver && !soldout && (
+          {!isEventOver && !soldout && (
             <div className="mt-2">
-              <Link size={"sm"} href={`/reservations/${timestamp}`}>
-                Reserve Tickets
-              </Link>
+              <Link href={`/reservations/${timestamp}`}>Reserve Tickets</Link>
             </div>
-          )} */}
+          )}
         </div>
         <div className="mt-0.5 flex items-center">
           {!isEventOver && !soldout && (
@@ -127,7 +123,10 @@ export function Event(props: EventItemProps) {
               rel="noreferrer noopener"
               href={reservationUrl}
             >
-              <TicketIcon className="-ml-0.5 h-5 w-5" aria-hidden="true" />
+              <ArrowTopRightOnSquareIcon
+                className="-ml-0.5 h-5 w-5"
+                aria-hidden="true"
+              />
             </Link>
           )}
           <button

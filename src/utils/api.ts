@@ -4,16 +4,16 @@ const withFetchErrorHandling = (fetchFunction) => {
   return async (...args) => {
     try {
       const response = await fetchFunction(...args);
-      if (!response.ok && response.status >= 500) {
-        console.log(response.ok);
-        throw new Error(`Server Error`);
-        // if (response.status >= 400) {
-        //   const responseData = await response.json();
-        //   console.log(responseData);
-        //   throw new Error(`Client Error`);
-        // }
+      const data = await response.json();
+      if (!response.ok) {
+        if (response.status >= 500) {
+          throw new Error(data.message);
+        }
+        if (response.status >= 400) {
+          throw data;
+        }
       }
-      return await response.json();
+      return data;
     } catch (error) {
       console.error("Error in fetch operation:", error);
       throw error;
