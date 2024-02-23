@@ -136,6 +136,13 @@ export default function Reservation() {
       <div className="px-4 py-5 sm:p-6">
         <form onSubmit={handleSubmit}>
           <div className="grid grid-cols-1 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-6 space-x-5">
+            <div className="sm:hidden mb-5">
+              <ShowDetails
+                show={showData.data.show}
+                lineUp={showData.data.lineUp}
+              />
+              <hr className="mt-5" />
+            </div>
             <div className="col-span-2 sm:col-span-2 md:col-span-3 lg:col-span-4">
               <Section title="Reservation Information" description="">
                 <input
@@ -276,16 +283,25 @@ export default function Reservation() {
               </Section>
             </div>
             <div className="col-span-1 sm:col-span-2 md:col-span-3 lg:col-span-2 space-y-5">
-              <ShowDetails
-                show={showData.data.show}
-                lineUp={showData.data.lineUp}
-              />
+              <div className="hidden sm:block">
+                <ShowDetails
+                  show={showData.data.show}
+                  lineUp={showData.data.lineUp}
+                />
+              </div>
               <hr />
               <Disclaimer />
             </div>
           </div>
           {reservationMutation.isSuccess ? (
-            <Link href={"/"}>Return home</Link>
+            <>
+              <div className="py-6">
+                <FormSuccess
+                  message={reservationMutation.data.content.message}
+                />
+              </div>
+              <Link href={"/"}>Return home</Link>
+            </>
           ) : (
             <div className="mt-6 flex items-center justify-between gap-x-6">
               <Button
@@ -322,14 +338,6 @@ const FormStatus = ({ formErrors, mutation }) => {
     return (
       <div className="py-6">
         <FormError errors={formErrors} />
-      </div>
-    );
-  }
-
-  if (mutation.isSuccess) {
-    return (
-      <div className="py-6">
-        <FormSuccess message={mutation.data.content.message} />
       </div>
     );
   }
