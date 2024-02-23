@@ -135,7 +135,7 @@ export default function Reservation() {
     <div className="overflow-hidden rounded-lg bg-white shadow">
       <div className="px-4 py-5 sm:p-6">
         <form onSubmit={handleSubmit}>
-          <div className="grid grid-cols-1 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-6 space-x-5">
+          <div className="grid grid-cols-1 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-6 gap-x-5">
             <div className="sm:hidden mb-5">
               <ShowDetails
                 show={showData.data.show}
