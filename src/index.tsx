@@ -1,9 +1,16 @@
 import { render } from "preact";
-import { LocationProvider, ErrorBoundary, lazy, Router } from "preact-iso";
+import {
+  LocationProvider,
+  ErrorBoundary,
+  lazy,
+  Router,
+  Route,
+} from "preact-iso";
 import { QueryClient, QueryClientProvider } from "react-query";
 import * as Sentry from "@sentry/browser";
 
 import { Header } from "./components/Header";
+import { Redirect } from "./components/Redirect";
 
 import "./style.css";
 
@@ -30,7 +37,8 @@ export function App() {
               <Router>
                 <Home path="/" />
                 <Reservations path="/reservations/:timestamp" />
-                <NotFound default />
+                <NotFound path="/404" />
+                <Route default component={() => <Redirect to="/" />} />
               </Router>
             </div>
           </main>

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "preact/hooks";
 import { useQuery, useMutation } from "react-query";
 import { isPast } from "date-fns";
-import { useLocation } from "preact-iso";
+import { useLocation, useRoute } from "preact-iso";
 import { fetchShowByTimestamp, createReservation } from "../../utils/api";
 
 import { Link } from "../../components/Link";
@@ -50,10 +50,12 @@ const howHeardOptions = [
 
 const timestampRegex = /\b\d{10}\b/;
 
-export default function Reservation(props: { timestamp: string }) {
+export default function Reservation() {
   const [errors, setErrors] = useState([]);
+  const {
+    params: { timestamp },
+  } = useRoute();
   const location = useLocation();
-  const timestamp = props.timestamp;
 
   if (
     !timestamp ||
